@@ -1,0 +1,17 @@
+help
+show
+history
+average_of_price
+insert 324
+show
+24
+42
+7777
+true
+cheap
+ski
+2003-02-23;14:23:33
+baseball
+show
+save
+filter_by_price 12
