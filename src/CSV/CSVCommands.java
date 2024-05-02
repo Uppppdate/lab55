@@ -15,9 +15,9 @@ public class CSVCommands {
      */
     TicketCollection collection;
     /**
-     * Static field that specifies the path to the file that is set in this method{@link CSVCommands#toParse(String)}
+     * Static field that specifies the path to the file that is set in this method{@link CSVCommands#toParse()}
      */
-    private static String PATH = "lab-5\\src\\dataBase.csv";
+    private static String PATH = "dataBase.csv";
 
     public CSVCommands(TicketCollection collection) {
         this.collection = collection;

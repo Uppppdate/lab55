@@ -90,10 +90,10 @@ public class ScriptManager {
                 break;
             }
             if (inputChar[i] == '\r') {
-                charBuilder.append(" ");
                 continue;
             }
             if (inputChar[i] == '\n') {
+                charBuilder.append(" ");
                 continue;
             }
             charBuilder.append(inputChar[i]);

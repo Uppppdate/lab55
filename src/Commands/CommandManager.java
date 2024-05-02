@@ -19,6 +19,7 @@ public class CommandManager {
      * A field that refers to an object whose fields contain the collection with which the program works.
      */
     private TicketCollection collection;
+    private Set<String> scriptHistory = new HashSet<>();
     /**
      * A field that refers to an object whose methods work with the xml file.
      */
@@ -286,6 +287,16 @@ public class CommandManager {
             if (!script.exists()) {
                 System.out.println("Specified file is not exist");
                 return;
+            }
+            if (scriptHistory.contains(compositeCommand[0])) {
+                System.out.println("This script has already been executed");
+                return;
+            }
+            if (isScriptWorking) {
+                scriptHistory.add(compositeCommand[0]);
+            }
+            else {
+                scriptHistory.add(tokens[1]);
             }
             isScriptWorking = true;
             ScriptManager scriptManager = new ScriptManager(script, commands, this);
