@@ -60,7 +60,12 @@ public class CSVCommands {
         stringBuilder.append(ticket.getType().name).append(",");
         stringBuilder.append(ticket.getEvent().getName()).append(",");
         stringBuilder.append(ticket.getEvent().getId()).append(",");
-        stringBuilder.append(ticket.getEvent().getDate().format(Filler.formatter)).append(",");
+        try {
+            stringBuilder.append(ticket.getEvent().getDate().format(Filler.formatter)).append(",");
+        }
+        catch (NullPointerException e){
+            stringBuilder.append("null").append(",");
+        }
         stringBuilder.append(ticket.getEvent().getEventType().name).append("\n");
         return new String(stringBuilder);
     }
@@ -73,7 +78,6 @@ public class CSVCommands {
     public static Hashtable<Long, Ticket> toParse() {
         try (Scanner scanner = new Scanner(new File(PATH))) {
             Hashtable<Long, Ticket> hashtable = new Hashtable<>();
-            long idCount = 1;
             while (scanner.hasNext()) {
                 String line = scanner.nextLine();
                 String data[] = line.split(",");
@@ -81,7 +85,6 @@ public class CSVCommands {
                 Long key = Long.parseLong(data[0]);
                 Ticket ticket = Filler.toBuildTicketWithAllData(tokens);
                 hashtable.put(key, ticket);
-                idCount++;
             }
             return hashtable;
         } catch (FileNotFoundException e) {

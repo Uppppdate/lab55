@@ -1,5 +1,7 @@
 package Commands;
 
+import Tickets.TicketCollection;
+
 import java.io.*;
 import java.util.Arrays;
 import java.util.Map;
@@ -8,6 +10,7 @@ import java.util.Map;
  * This class works with the script
  */
 public class ScriptManager {
+    private TicketCollection collection;
     /**
      * Field that links to a script file
      */
@@ -21,10 +24,11 @@ public class ScriptManager {
      */
     private CommandManager commandManager;
 
-    public ScriptManager(File script, Map<String, Command> commands, CommandManager commandManager) {
+    public ScriptManager(File script, Map<String, Command> commands, CommandManager commandManager, TicketCollection collection) {
         this.script = script;
         this.commands = commands;
         this.commandManager = commandManager;
+        this.collection = collection;
     }
 
     /**
@@ -51,6 +55,8 @@ public class ScriptManager {
                     commandManager.getCommandsHistory().addLast(tokens[i]);
                 }
                 else {commandManager.getCommandsHistory().addLast(tokens[i]);}
+                collection.updateData();
+                collection.updateNumeration();
             } catch (NullPointerException e) {
                 System.err.println("There is an mistake in the script");
             }

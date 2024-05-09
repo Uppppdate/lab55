@@ -3,13 +3,13 @@ package Commands.ConcreteCommands;
 import Commands.Command;
 import Commands.CommandManager;
 
-public class RemoveByKeyCommand implements Command {
+public class RemoveKeyCommand implements Command {
     /**
      * A field that refers to an object with implementations of all commands
      */
     CommandManager commandManager;
 
-    public RemoveByKeyCommand(CommandManager commandManager) {
+    public RemoveKeyCommand(CommandManager commandManager) {
         this.commandManager = commandManager;
     }
     /**

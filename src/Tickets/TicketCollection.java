@@ -7,7 +7,7 @@ public class TicketCollection {
     private Date initializationDate;
     private String collectionType;
     private String internalType;
-    private int amountOfElements;
+    public static Long amountOfElements;
     private int lastIndexWorkedWith;
     private long lastIdWorkedWith;
     private long lastAnnualTurnoverWorkedWith;
@@ -17,7 +17,7 @@ public class TicketCollection {
         this.hashtable = hashtable;
         collectionType = hashtable.getClass().getSimpleName();
         internalType = "Tickets";
-        amountOfElements = hashtable.size();
+        amountOfElements = (long) hashtable.size();
         initializationDate = new Date();
     }
 
@@ -31,7 +31,7 @@ public class TicketCollection {
     }
 
     public void updateData() {
-        amountOfElements = hashtable.size();
+        amountOfElements = (long)hashtable.size();
         initializationDate = new Date();
     }
 
@@ -46,50 +46,26 @@ public class TicketCollection {
         return new String(stringBuilder);
     }
 
+    public void updateNumeration(){
+        Set<Map.Entry<Long, Ticket>> skibidi = hashtable.entrySet();
+        List<Map.Entry<Long, Ticket>> list = skibidi.stream().toList();
+        Hashtable<Long, Ticket> newHashTable = new Hashtable<>();
+        for(long i = 0; i<list.size(); i++){
+            Ticket ticket = list.get((int) i).getValue();
+            ticket.setId(i+1);
+            newHashTable.put(i+1, ticket);
+        }
+        Hashtable<Long, Ticket> table = new Hashtable<>();
+        for(long i = 0; i<list.size(); i++){
+            Ticket ticket = newHashTable.get(list.size()-i);
+            ticket.setId(i+1);
+            table.put(i + 1, ticket);
+        }
+        setHashtable(table);
+    }
     public String toShowInfo(){
         return "Collection type: " + collectionType +
                 "\nInternal type: " + internalType +
                 "\nAmount of elements: " + hashtable.size();
-    }
-
-    public long getLastIdWorkedWith() {
-        return lastIdWorkedWith;
-    }
-
-    public long getLastAnnualTurnoverWorkedWith() {
-        return lastAnnualTurnoverWorkedWith;
-    }
-
-    public void setLastAnnualTurnoverWorkedWith(long lastAnnualTurnoverWorkedWith) {
-        this.lastAnnualTurnoverWorkedWith = lastAnnualTurnoverWorkedWith;
-    }
-
-    public TicketType getLastOrganizationTypeWorkedWith() {
-        return lastTicketTypeWorkedWith;
-    }
-
-    public void setLastOrganizationTypeWorkedWith(TicketType lastTicketTypeWorkedWith) {
-        this.lastTicketTypeWorkedWith = lastTicketTypeWorkedWith;
-    }
-
-//    public int setLastIdWorkedWith(long lastIdWorkedWith) {
-//        Hashtable<Long, Ticket> list1 = getCollection().stream().filter(o -> o.getId()==lastIdWorkedWith).toList();
-//        if(list1.isEmpty()){
-//            return -1;
-//        }
-//        this.lastIdWorkedWith = lastIdWorkedWith;
-//        return 1;
-//    }
-
-    public int getLastIndexWorkedWith() {
-        return lastIndexWorkedWith;
-    }
-
-    public int setLastIndexWorkedWith(int lastIndexWorkedWith) {
-        if(getCollection().size()-1<lastIndexWorkedWith){
-            return -1;
-        }
-        this.lastIndexWorkedWith = lastIndexWorkedWith;
-        return 1;
     }
 }

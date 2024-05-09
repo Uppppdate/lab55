@@ -16,7 +16,6 @@ public class Filler {
     /**
      * Field, created to ensure the uniqueness of the created id
      */
-    public static long idCount = 1;
     public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd;HH:mm:ss");
 
     /**
@@ -133,9 +132,9 @@ public class Filler {
                 output[7] = LocalDateTime.parse(request, formatter).format(formatter);
                 break;
             } catch (DateTimeParseException e) {
-                if ((request.equals("\n"))) {
+                if ((request.equals(""))) {
                     System.out.println("Blank date entered");
-                    output[7] = "";
+                    output[7] = "null";
                     break;
                 }
                 System.out.println("Invalid date and time format. Please re-enter.");
@@ -180,9 +179,13 @@ public class Filler {
             ticket.setEvent(new Event());
             ticket.getEvent().setName(commands[8]);
             ticket.getEvent().setId(Integer.parseInt(commands[9]));
-            ticket.getEvent().setDate(LocalDateTime.parse(commands[10], formatter));
+            try {
+                ticket.getEvent().setDate(LocalDateTime.parse(commands[10], formatter));
+            }
+            catch (DateTimeParseException e){
+                ticket.getEvent().setDate(null);
+            }
             ticket.getEvent().setEventType(EventType.valueOf(commands[11].toUpperCase()));
-            idCount++;
             return ticket;
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
@@ -194,7 +197,7 @@ public class Filler {
         try {
             Ticket ticket = new Ticket();
             Random random = new Random();
-            ticket.setId((random.nextLong(100000)));
+            ticket.setId(TicketCollection.amountOfElements + 1);
             ticket.setName(commands[0]);
             ticket.setCoordinates(new Coordinates(Long.parseLong(commands[1]), Long.parseLong(commands[2])));
             LocalDateTime localDateTime = LocalDateTime.now();
@@ -206,9 +209,13 @@ public class Filler {
             ticket.setEvent(new Event());
             ticket.getEvent().setName(commands[6]);
             ticket.getEvent().setId(random.nextInt(100000));
-            ticket.getEvent().setDate(LocalDateTime.parse(commands[7], formatter));
+            if(commands[7].equals("null")){
+                ticket.getEvent().setDate(null);
+            }
+            else {
+                ticket.getEvent().setDate(LocalDateTime.parse(commands[7], formatter));
+            }
             ticket.getEvent().setEventType(EventType.valueOf(commands[8].toUpperCase()));
-            idCount++;
             return ticket;
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());

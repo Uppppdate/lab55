@@ -31,7 +31,7 @@ public class Console {
         commands.put("info", new InfoCommand(commandManager));
         commands.put("update", new UpdateCommand(commandManager));
         commands.put("execute_script", new ExecuteScriptCommand(commandManager));
-        commands.put("remove_by_key", new RemoveByKeyCommand(commandManager));
+        commands.put("remove_key", new RemoveKeyCommand(commandManager));
         commands.put("min_by_price", new MinByPriceCommand(commandManager));
         commands.put("filter_by_price", new FilterByPriceCommand(commandManager));
         commands.put("average_of_price", new AveragePriceCommand(commandManager));
@@ -62,6 +62,8 @@ public class Console {
                     commandManager.getCommandsHistory().addLast(tokens[0]);
                 }
                 else {commandManager.getCommandsHistory().addLast(tokens[0]);}
+                collection.updateData();
+                collection.updateNumeration();
             } catch (NullPointerException e) {
                 System.out.println("The entered command does not exist");
             } catch (NoSuchElementException e){

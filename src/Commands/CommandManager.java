@@ -1,6 +1,7 @@
 package Commands;
 
 import Commands.ConcreteCommands.InsertCommand;
+import Commands.ConcreteCommands.RemoveKeyCommand;
 import Commands.ConcreteCommands.SaveToCSVCommand;
 import Tickets.Filler;
 import Tickets.*;
@@ -99,7 +100,6 @@ public class CommandManager {
      */
     public void clear() {
         collection.getCollection().clear();
-        collection.updateData();
         System.out.println("Collection cleared");
     }
 
@@ -115,20 +115,16 @@ public class CommandManager {
      * {@link InsertCommand}
      */
     public void insert() {
+        Long key = (long) collection.getCollection().size() + 1;
         try {
-            long key = 0;
             if (isScriptWorking) {
-                key = Long.parseLong(compositeCommand[0]);
-                String[] data = Arrays.copyOfRange(compositeCommand, 1, compositeCommand.length);
-                Ticket ticket = Filler.toBuildTicket(data);
+                Ticket ticket = Filler.toBuildTicket(compositeCommand);
                 collection.getCollection().put(key, ticket);
                 clearCompositeCommand();
             } else {
-                key = Long.parseLong(tokens[1]);
                 Ticket ticket = Filler.fill();
                 collection.getCollection().put(key, ticket);
             }
-            collection.updateData();
             System.out.println("Ticket successfully added");
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Please, enter the key in the command");
@@ -270,10 +266,8 @@ public class CommandManager {
             System.out.println("Please, enter the key in the command");
         }
     }
-
     /**
      * A command that creates an object of the {@link ScriptManager} class and starts the script process
-     *
      * @see Commands.ConcreteCommands.ExecuteScriptCommand
      */
     public void executeScript() {
@@ -299,7 +293,7 @@ public class CommandManager {
                 scriptHistory.add(tokens[1]);
             }
             isScriptWorking = true;
-            ScriptManager scriptManager = new ScriptManager(script, commands, this);
+            ScriptManager scriptManager = new ScriptManager(script, commands, this, collection);
             System.out.println("Script is executing");
             if (isScriptWorking) {
                 clearCompositeCommand();
@@ -354,7 +348,7 @@ public class CommandManager {
     }
 
     /**
-     * A command that allows you to delete an object by its key {@link Commands.ConcreteCommands.RemoveByKeyCommand}
+     * A command that allows you to delete an object by its key {@link RemoveKeyCommand}
      */
     public void removeByKey() {
         try {

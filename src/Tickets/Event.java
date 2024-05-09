@@ -42,9 +42,18 @@ public class Event {
 
     @Override
     public String toString() {
-        return "Event id: " + id +
-                ", event name: " + name +
-                ", date: " + date.format(Filler.formatter) +
-                ", event type: " + eventType + "\n";
+        String out;
+        try {
+            out = "Event id: " + id +
+                    ", event name: " + name +
+                    ", date: " + date.format(Filler.formatter) +
+                    ", event type: " + eventType + "\n";
+        } catch (NullPointerException e) {
+            out = "Event id: " + id +
+                    ", event name: " + name +
+                    ", date: null" +
+                    ", event type: " + eventType + "\n";
+        }
+        return out;
     }
 }
